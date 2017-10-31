@@ -99,9 +99,11 @@ class RangeSlider: UIControl {
         let location = touch.location(in: self)
         
         // 1. Determine by how much the user has dragged
-        let deltaLocation = Double(location.x - previousLocation.x)
-        let deltaValue = (maximumValue - minimumValue) * deltaLocation / Double(bounds.width - thumbWidth)
+        let deltaLocation = Double(location.y - previousLocation.y)
+        let deltaValue = (maximumValue - minimumValue) * deltaLocation / Double(bounds.height - thumbWidth)
         
+        // stopped here !!!<---!!!
+        // lookup here ->>> https://www.raywenderlich.com/76433/how-to-make-a-custom-control-swift
         previousLocation = location
         
         // 2. Update the values
