@@ -10,7 +10,11 @@ import UIKit
 import QuartzCore
 
 class RangeSliderThumbLayer: CALayer {
-     var highlighted = false
+    var highlighted = false {
+        didSet{
+           setNeedsDisplay()
+        }
+    }
      weak var rangeSlider: RangeSlider?
 	
 	override func draw(in ctx: CGContext) {

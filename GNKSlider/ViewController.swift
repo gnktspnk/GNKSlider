@@ -14,9 +14,10 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor.darkGray
 		let margin: CGFloat = 54.0
 		let width: CGFloat = 154
-		let height: CGFloat = 300
+		let height: CGFloat = 220
 		let rangeSlider = RangeSlider(frame: CGRect(x: margin, y: margin + topLayoutGuide.length,
 													width: width, height: height))
         view.addSubview(rangeSlider)

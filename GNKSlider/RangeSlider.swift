@@ -16,10 +16,11 @@ class RangeSlider: UIControl {
     var lowerValue = 0.2
     var upperValue = 0.8
     
-	//var scaleLayer = ScaleLayer()
     let lowerThumbLayer = RangeSliderThumbLayer()
     let upperThumbLayer = RangeSliderThumbLayer()
 	let trackLayer = RangeSliderScaleLayer()
+    let cupLayer = CAShapeLayer()
+    
     var previousLocation = CGPoint()
 	
     var thumbWidth : CGFloat {
@@ -27,14 +28,12 @@ class RangeSlider: UIControl {
     }
 	
 	var trackTintColor = UIColor.red
-	var trackHighlightTintColor = UIColor.green
+	var selectedRangeColor = UIColor.green
 	var thumbTintColor = UIColor.white
-	var curvaceousness : CGFloat = 1
+	var curvaceousness : CGFloat = 10
 	let thumbsXInset : CGFloat = 120
 	let scaleMargin : CGFloat = 35
 	
-	let cupLayer = CAShapeLayer()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
 		
@@ -49,20 +48,7 @@ class RangeSlider: UIControl {
 		upperThumbLayer.rangeSlider = self
 		upperThumbLayer.contentsScale = UIScreen.main.scale
 		layer.addSublayer(upperThumbLayer)
-		
-//        lowerThumbLayer.rangeSlider = self
-//        upperThumbLayer.rangeSlider = self
-//		scaleLayer.rangeSlider = self
-//
-//		scaleLayer.backgroundColor = UIColor.red.cgColor
-//		layer.addSublayer(scaleLayer)
-//
-//        lowerThumbLayer.backgroundColor = UIColor.green.cgColor
-//        layer.addSublayer(lowerThumbLayer)
-//
-//        upperThumbLayer.backgroundColor = UIColor.green.cgColor
-//        layer.addSublayer(upperThumbLayer)
-//
+
          updateLayerFrames()
 		 drawCupLayer()
     }
@@ -97,10 +83,7 @@ class RangeSlider: UIControl {
     func updateLayerFrames(){
 		trackLayer.frame = CGRect(x: scaleMargin, y: 0.0, width: bounds.width, height: bounds.height) //bounds
 		trackLayer.setNeedsDisplay()
-		
-//		scaleLayer.frame = bounds
-//		scaleLayer.setNeedsDisplay()
-		
+				
         let lowerThumbCenter = CGFloat(positionForValue(value: lowerValue))
         
         lowerThumbLayer.frame = CGRect(x: thumbsXInset, y: lowerThumbCenter - thumbWidth / 2,
