@@ -10,20 +10,25 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let rangeSlider = RangeSlider(frame: .zero)
+    //let rangeSlider = RangeSlider(frame: .zero)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+		let margin: CGFloat = 54.0
+		let width: CGFloat = 154
+		let height: CGFloat = 300
+		let rangeSlider = RangeSlider(frame: CGRect(x: margin, y: margin + topLayoutGuide.length,
+													width: width, height: height))
         view.addSubview(rangeSlider)
+		
+		rangeSlider.addTarget(self, action: #selector(rangeSliderValueChanged), for: .valueChanged)
     }
+	
+	@objc func rangeSliderValueChanged(rangeSlider: RangeSlider){
+		print("Range slider new value: \(rangeSlider.lowerValue)-\(rangeSlider.upperValue)")
+	}
     
-    override func viewDidLayoutSubviews() {
-        let margin: CGFloat = 54.0
-        let width: CGFloat = 54
-        let height: CGFloat = 300
-        rangeSlider.frame = CGRect(x: margin, y: margin + topLayoutGuide.length,
-                                   width: width, height: height)
-    }
+
 
 
 }

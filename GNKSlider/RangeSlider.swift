@@ -16,52 +16,100 @@ class RangeSlider: UIControl {
     var lowerValue = 0.2
     var upperValue = 0.8
     
-    let trackLayer = ScaleLayer()
+	//var scaleLayer = ScaleLayer()
     let lowerThumbLayer = RangeSliderThumbLayer()
     let upperThumbLayer = RangeSliderThumbLayer()
-    
+	let trackLayer = RangeSliderScaleLayer()
     var previousLocation = CGPoint()
-    
+	
     var thumbWidth : CGFloat {
-        return CGFloat(bounds.width)
+        return bounds.insetBy(dx: 60, dy: 60).width
     }
+	
+	var trackTintColor = UIColor.red
+	var trackHighlightTintColor = UIColor.green
+	var thumbTintColor = UIColor.white
+	var curvaceousness : CGFloat = 1
+	let thumbsXInset : CGFloat = 120
+	let scaleMargin : CGFloat = 35
+	
+	let cupLayer = CAShapeLayer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        lowerThumbLayer.rangeSlider = self
-        upperThumbLayer.rangeSlider = self
-		trackLayer.rangeSlider = self
 		
-        trackLayer.backgroundColor = UIColor.red.cgColor
-        layer.addSublayer(trackLayer)
-        
-        lowerThumbLayer.backgroundColor = UIColor.green.cgColor
-        layer.addSublayer(lowerThumbLayer)
-        
-        upperThumbLayer.backgroundColor = UIColor.green.cgColor
-        layer.addSublayer(upperThumbLayer)
-        
-        updateLayerFrames()
-        
+		trackLayer.rangeSlider = self
+		trackLayer.contentsScale = UIScreen.main.scale
+		layer.addSublayer(trackLayer)
+		
+		lowerThumbLayer.rangeSlider = self
+		lowerThumbLayer.contentsScale = UIScreen.main.scale
+		layer.addSublayer(lowerThumbLayer)
+		
+		upperThumbLayer.rangeSlider = self
+		upperThumbLayer.contentsScale = UIScreen.main.scale
+		layer.addSublayer(upperThumbLayer)
+		
+//        lowerThumbLayer.rangeSlider = self
+//        upperThumbLayer.rangeSlider = self
+//		scaleLayer.rangeSlider = self
+//
+//		scaleLayer.backgroundColor = UIColor.red.cgColor
+//		layer.addSublayer(scaleLayer)
+//
+//        lowerThumbLayer.backgroundColor = UIColor.green.cgColor
+//        layer.addSublayer(lowerThumbLayer)
+//
+//        upperThumbLayer.backgroundColor = UIColor.green.cgColor
+//        layer.addSublayer(upperThumbLayer)
+//
+         updateLayerFrames()
+		 drawCupLayer()
     }
-    
+	
+	let bottomCupMargins: CGFloat = 50
+	func drawCupLayer(){
+		let path = UIBezierPath()
+		path.move(to: CGPoint.init(x: 0, y: bounds.height / 2))
+		path.addLine(to: CGPoint.init(x: bounds.width - 50 , y: bounds.height / 2))
+		path.addLine(to: CGPoint.init(x: bounds.width - bottomCupMargins*1.5, y: bounds.height))
+		path.addLine(to: CGPoint.init(x: bounds.width - bottomCupMargins*2.5, y: bounds.height))
+		path.close()
+		
+		cupLayer.path = path.cgPath
+		let waterColor = UIColor.init(red: 64/255, green: 164/255, blue: 223/255, alpha: 0.5)
+		cupLayer.fillColor = waterColor.cgColor
+		cupLayer.fillRule = kCAFillRuleNonZero
+		cupLayer.lineCap = kCALineCapButt
+		cupLayer.lineDashPattern = nil
+		cupLayer.lineDashPhase = 0.0
+		cupLayer.lineJoin = kCALineJoinMiter
+		cupLayer.lineWidth = 3.0
+		cupLayer.miterLimit = 10.0
+		cupLayer.strokeColor = UIColor.black.cgColor
+		layer.addSublayer(cupLayer)
+	}
+	
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func updateLayerFrames(){
-        trackLayer.frame = bounds
-        trackLayer.setNeedsDisplay()
-        
+		trackLayer.frame = CGRect(x: scaleMargin, y: 0.0, width: bounds.width, height: bounds.height) //bounds
+		trackLayer.setNeedsDisplay()
+		
+//		scaleLayer.frame = bounds
+//		scaleLayer.setNeedsDisplay()
+		
         let lowerThumbCenter = CGFloat(positionForValue(value: lowerValue))
         
-        lowerThumbLayer.frame = CGRect(x: 0, y: lowerThumbCenter - thumbWidth / 2,
+        lowerThumbLayer.frame = CGRect(x: thumbsXInset, y: lowerThumbCenter - thumbWidth / 2,
                                        width: thumbWidth, height: thumbWidth)
         lowerThumbLayer.setNeedsDisplay()
         
         let upperThumbCenter = CGFloat(positionForValue(value: upperValue))
         
-        upperThumbLayer.frame = CGRect(x: 0.0, y: upperThumbCenter - thumbWidth / 2,
+        upperThumbLayer.frame = CGRect(x: thumbsXInset, y: upperThumbCenter - thumbWidth / 2,
                                        width: thumbWidth, height: thumbWidth)
         upperThumbLayer.setNeedsDisplay()
     }
@@ -123,7 +171,8 @@ class RangeSlider: UIControl {
         updateLayerFrames()
         
         CATransaction.commit()
-        
+		
+		sendActions(for: .valueChanged)
         return true
     }
     
