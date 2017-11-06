@@ -10,7 +10,8 @@ import UIKit
 import QuartzCore
 
 class RangeSliderThumbLayer: CALayer {
-    var highlighted = false {
+	
+	var highlighted = false {
         didSet{
            setNeedsDisplay()
         }
@@ -40,7 +41,7 @@ class RangeSliderThumbLayer: CALayer {
 			if highlighted {
 				ctx.setFillColor(UIColor(white: 0.0, alpha: 0.1).cgColor)
 				ctx.addPath(thumbPath.cgPath)
-				(ctx).fillPath()
+				ctx.fillPath()
 			}
 		}
 	}

@@ -18,8 +18,11 @@ class ViewController: UIViewController {
 		let margin: CGFloat = 54.0
 		let width: CGFloat = 154
 		let height: CGFloat = 220
-		let rangeSlider = RangeSlider(frame: CGRect(x: margin, y: margin + topLayoutGuide.length,
-													width: width, height: height))
+		let rangeSlider = RangeSlider(frame: CGRect(x: margin,
+													y: margin + 120,
+													width: width,
+													height: height)
+									 )
         view.addSubview(rangeSlider)
 		
 		rangeSlider.addTarget(self, action: #selector(rangeSliderValueChanged), for: .valueChanged)
