@@ -17,12 +17,17 @@ class ViewController: UIViewController {
         view.backgroundColor = UIColor.darkGray
 		let margin: CGFloat = 54.0
 		let width: CGFloat = 154
-		let height: CGFloat = 220
-		let rangeSlider = RangeSlider(frame: CGRect(x: margin,
-													y: margin + 120,
-													width: width,
-													height: height)
-									 )
+		let height: CGFloat = 400
+        
+        let rangeSliderFrame = CGRect(x: margin,
+                                      y: margin + 120,
+                                      width: width,
+                                      height: height)
+        
+		let rangeSlider = RangeSlider(lowerValue: 8.0,
+                                      upperValue: 20.0,
+                                      currentWaterValue: 20.0,
+                                      frame: rangeSliderFrame)
         view.addSubview(rangeSlider)
 		
 		rangeSlider.addTarget(self, action: #selector(rangeSliderValueChanged), for: .valueChanged)

@@ -14,13 +14,6 @@ class RangeSliderScaleLayer: CALayer {
 	
 	override func draw(in ctx: CGContext) {
 		if let slider = rangeSlider {
-			// Clip
-//            let cornerRadius = bounds.width * slider.curvaceousness / 2.0
-//            let path = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius)
-//            ctx.setStrokeColor(UIColor.black.cgColor)
-//            path.stroke()
-//            ctx.addPath(path.cgPath)
-
 			// Fill the highlighted and background range
 			ctx.setFillColor(slider.selectedRangeColor.cgColor)
 			let lowerValuePosition = CGFloat(slider.positionForValue(value: slider.lowerValue))

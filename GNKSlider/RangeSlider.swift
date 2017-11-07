@@ -14,12 +14,10 @@ class RangeSlider: UIControl {
     let minimumValue = 6.0
     let maximumValue = 26.0
 	
-	var lowerValue = 8.0
-    var upperValue = 25.0
-	var currentWaterValue = 20.0
-	
-	
-    
+	var lowerValue = -1.0
+    var upperValue = -1.0
+	var currentWaterValue = -10.0
+
     let lowerThumbLayer = RangeSliderThumbLayer()
     let upperThumbLayer = RangeSliderThumbLayer()
 	let trackLayer = RangeSliderScaleLayer()
@@ -45,27 +43,36 @@ class RangeSlider: UIControl {
 	let currentWaterFlagBorderWidth : CGFloat = 1
 	let scaleMargin : CGFloat = 35
 	
+    convenience init(lowerValue: Double,
+                     upperValue: Double,
+                     currentWaterValue: Double,
+                     frame : CGRect) {
+        self.init(frame: frame)
+        self.lowerValue = lowerValue
+        self.upperValue = upperValue
+        self.currentWaterValue = currentWaterValue
+        updateLayerFrames()
+        drawCupLayer()
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-		
-		trackLayer.rangeSlider = self
-		trackLayer.contentsScale = UIScreen.main.scale
-		layer.addSublayer(trackLayer)
-		
-		lowerThumbLayer.rangeSlider = self
-		lowerThumbLayer.contentsScale = UIScreen.main.scale
-		layer.addSublayer(lowerThumbLayer)
-		
-		upperThumbLayer.rangeSlider = self
-		upperThumbLayer.contentsScale = UIScreen.main.scale
-		layer.addSublayer(upperThumbLayer)
 
-		currentWaterFlag.rangeSlider = self
-		currentWaterFlag.contentsScale = UIScreen.main.scale
-		layer.addSublayer(currentWaterFlag)
-		
-         updateLayerFrames()
-		 drawCupLayer()
+        trackLayer.rangeSlider = self
+        trackLayer.contentsScale = UIScreen.main.scale
+        layer.addSublayer(trackLayer)
+
+        lowerThumbLayer.rangeSlider = self
+        lowerThumbLayer.contentsScale = UIScreen.main.scale
+        layer.addSublayer(lowerThumbLayer)
+
+        upperThumbLayer.rangeSlider = self
+        upperThumbLayer.contentsScale = UIScreen.main.scale
+        layer.addSublayer(upperThumbLayer)
+
+        currentWaterFlag.rangeSlider = self
+        currentWaterFlag.contentsScale = UIScreen.main.scale
+        layer.addSublayer(currentWaterFlag)
     }
 	
 	let bottomCupMargins: CGFloat = 50
@@ -108,10 +115,10 @@ class RangeSlider: UIControl {
 		cupFillPath.fill()
 		
 		var leftIntersectedPoint: CGFloat = 0
-		var rightIntersectedPoint: CGFloat = bounds.height / 2 -  8 // I can't explain this for now.
+		var rightIntersectedPoint: CGFloat = topRightPoint.x
 		if currentWaterValue < (maximumValue + minimumValue) / 2 {
 			leftIntersectedPoint = leftCupLine.getValue(forY: CGFloat(positionForValue(value: currentWaterValue))) ?? 0
-			rightIntersectedPoint = rightCupLine.getValue(forY: CGFloat(positionForValue(value: currentWaterValue))) ?? bounds.height / 2 - 8
+			rightIntersectedPoint = rightCupLine.getValue(forY: CGFloat(positionForValue(value: currentWaterValue))) ?? topRightPoint.x
 		}
 		
 		
